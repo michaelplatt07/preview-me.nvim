@@ -29,16 +29,20 @@ end
 
 function util.generate_preview(uri, start_line)
 	local bufnr = vim.uri_to_bufnr(uri)
+	local retLines = {}
 	if bufnr == nil then
 		print(string.format("Error generating preview for file: %s", uri))
 	end
-	-- local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)
 	local lines = load_contents(bufnr)
 
 	if lines == nil then
 		print("Error")
 	end
-	return lines[start_line + 1]
+
+	for lineNum = start_line - 2, start_line + 4 do
+		table.insert(retLines, lines[lineNum])
+	end
+	return retLines
 end
 
 return util

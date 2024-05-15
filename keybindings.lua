@@ -11,7 +11,7 @@ function keybindings.map_keys(buf)
 		':lua require("preview-me.windower").open_in_curr_window()<CR>',
 		{}
 	)
-	vim.api.nvim_buf_set_keymap(buf, "n", "q", [[:lua close_window()<CR>]], {})
+	vim.api.nvim_buf_set_keymap(buf, "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {})
 end
 
 return keybindings
