@@ -6,9 +6,9 @@ This plugin is not currently fully configured for installation through all Neovi
 supports install by cloning the repository to the plugins folder and requiring it in the `init.lua` file like:
 
 ```lua
-local previewer = require("previewer.previewer")
+local previewer = require("preview-me.previewer")
 -- Set key binding of choice to the open_references function call
-vim.keymap.set("n", "gr", previewer.open_references)
+vim.keymap.set("n", "gr", preview-me.open_references)
 ```
 
 ### Package Managers

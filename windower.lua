@@ -1,4 +1,4 @@
-local state = require("previewer.state")
+local state = require("preview-me.state")
 
 local windower = {}
 

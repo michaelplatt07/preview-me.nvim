@@ -1,7 +1,6 @@
-local state = require("previewer.state")
-local config = require("previewer.config")
-local windower = require("previewer.windower")
-local keybindings = require("previewer.keybindings")
+local state = require("preview-me.state")
+local config = require("preview-me.config")
+local keybindings = require("preview-me.keybindings")
 local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching

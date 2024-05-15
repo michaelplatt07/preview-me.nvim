@@ -1,6 +1,6 @@
 local state = {}
 
-local util = require("previewer.util")
+local util = require("preview-me.util")
 
 function state.set_rows(references)
 	local lines = {}
