@@ -20,10 +20,10 @@ function previewer.open_references()
 
 	-- Callback for when the cursor moves around in the buffer
 	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+		buffer = state.referenceBuf,
 		callback = function()
 			state.update_selected_row()
 			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
-			-- TODO(map) Why is this being called several times? Probably because the cursor moves in several buffers? Limit this to one buffer autocmd only
 			if state.currentPreview ~= nil then
 				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
 			end
