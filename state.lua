@@ -14,7 +14,6 @@ function state.set_rows(references)
 	for _, reference in ipairs(references) do
 		if reference.result then
 			for idx, data in ipairs(reference.result) do
-				print("uri = ", data.uri)
 				local previewLines = util.generate_preview(data.uri, data.range.start.line)
 				lineToDataMap[idx] = data
 				table.insert(
@@ -30,6 +29,14 @@ function state.set_rows(references)
 	state.lineToDataMap = lineToDataMap
 	state.currentLineData = lineToDataMap[1]
 	state.currentPreview = previews[1]
+end
+
+function state.clear_state()
+	state.lines = {}
+	state.previews = {}
+	state.lineToDataMap = {}
+	state.currentLineData = {}
+	state.currentPreview = {}
 end
 
 function state.update_selected_row()

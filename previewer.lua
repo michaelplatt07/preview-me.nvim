@@ -24,12 +24,9 @@ function previewer.open_references()
 		callback = function()
 			state.update_selected_row()
 			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
-			if state.currentPreview ~= nil then
-				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
-			end
+			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
 		end,
 	})
-	-- TODO(map) Prevent going into insert mode all together with an autocmd
 
 	-- Populate the buffers with the reference information and previews
 	vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
@@ -42,7 +39,8 @@ function previewer.open_references()
 		config.referencesWindowRow,
 		config.referencesWindowCol,
 		config.width,
-		config.height
+		config.height,
+		"References"
 	)
 	state.previewWin = windower.create_floating_window(
 		state.previewBuf,
@@ -50,11 +48,15 @@ function previewer.open_references()
 		config.previewWindowRow,
 		config.previewWindowCol,
 		config.width,
-		config.height
+		config.height,
+		"Preview"
 	)
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
+
+	-- Set buffer to not modifiable
+	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", false)
 end
 
 return previewer
