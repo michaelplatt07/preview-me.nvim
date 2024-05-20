@@ -11,7 +11,8 @@ function M.open_in_buf()
 end
 
 function M.setup(config)
-	print(config)
+	if config.keys ~= nil then
+	end
 end
 
 return M
