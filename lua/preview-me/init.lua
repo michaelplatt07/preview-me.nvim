@@ -1,5 +1,6 @@
 local previewer = require("preview-me.previewer")
 local windower = require("preview-me.windower")
+local keybindings = require("preview-me.keybindings")
 local M = {}
 
 function M.open()
@@ -12,6 +13,7 @@ end
 
 function M.setup(config)
 	if config.keys ~= nil then
+		keybindings.update_key_binding(config.keys[1])
 	end
 end
 

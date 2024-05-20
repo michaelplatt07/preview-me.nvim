@@ -6,7 +6,11 @@ local keybindings = {
 	quit = { "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {} },
 }
 
-function keybindings.update_key_binding() end
+function keybindings.update_key_binding(custombind)
+	keybindings.curr_window[1] = custombind[1]
+	keybindings.curr_window[2] = custombind[2]
+	keybindings.curr_window[3] = custombind[3]
+end
 
 function keybindings.map_keys(buf)
 	vim.api.nvim_buf_set_keymap(buf, "n", "<leader>vs", ':lua require("preview-me.windower").split_v_ref()<CR>', {})
