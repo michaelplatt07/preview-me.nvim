@@ -7,6 +7,8 @@ keybindings.curr_window = { "n", "<leader>o", ':lua require("preview-me.windower
 keybindings.quit = { "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {} }
 
 function keybindings.update_key_binding(custombind)
+	print("In update key binding, value = ", custombind[1])
+	print("In update key binding, cmd = ", custombind[2])
 	keybindings.curr_window[1] = custombind[1]
 	keybindings.curr_window[2] = custombind[2]
 	keybindings.curr_window[3] = custombind[3]
