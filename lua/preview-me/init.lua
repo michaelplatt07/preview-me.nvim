@@ -13,6 +13,7 @@ end
 
 function M.setup(config)
 	if config.keys ~= nil then
+		print(config.keys[1])
 		keybindings.update_key_binding(config.keys[1])
 	end
 end
