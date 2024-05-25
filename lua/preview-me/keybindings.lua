@@ -11,7 +11,6 @@ function keybindings.update_key_binding(custombind)
 	print("In update key binding, cmd = ", custombind[2])
 	keybindings.curr_window[1] = custombind[1]
 	keybindings.curr_window[2] = custombind[2]
-	keybindings.curr_window[3] = custombind[3]
 end
 
 function keybindings.map_keys(buf)
