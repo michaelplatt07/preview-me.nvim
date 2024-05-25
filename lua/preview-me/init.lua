@@ -25,8 +25,8 @@ end
 
 function M.setup(config)
 	if config.keys ~= nil then
-		for _, custombind in pairs(config.keys) do
-			keybindings.update_key_binding(custombind)
+		for func, custombind in pairs(config.keys) do
+			keybindings.update_key_binding(func, custombind)
 		end
 	end
 end

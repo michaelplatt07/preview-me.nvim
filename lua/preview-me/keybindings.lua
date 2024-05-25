@@ -6,9 +6,9 @@ local keybindings = {
 	quit = { "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {} },
 }
 
-function keybindings.update_key_binding(custombind)
-	keybindings.curr_window[1] = custombind[1]
-	keybindings.curr_window[2] = custombind[2]
+function keybindings.update_key_binding(func, custombind)
+	keybindings.func[1] = custombind[1]
+	keybindings.func[2] = custombind[2]
 end
 
 function keybindings.map_keys(buf)
