@@ -24,9 +24,11 @@ function M.open_in_new_tab()
 end
 
 function M.setup(config)
-	if config.keys ~= nil then
-		for func, custombind in pairs(config.keys) do
-			keybindings.update_key_binding(func, custombind)
+	if config ~= nil then
+		if config.keys ~= nil then
+			for func, custombind in pairs(config.keys) do
+				keybindings.update_key_binding(func, custombind)
+			end
 		end
 	end
 end
