@@ -15,6 +15,7 @@ function M.setup(config)
 	if config.keys ~= nil then
 		print("Binding = ", config.keys[1][1])
 		print("Command = ", config.keys[1][2])
+		print("Keybindings = ", keybindings)
 		keybindings.update_key_binding(config.keys[1])
 	end
 end
