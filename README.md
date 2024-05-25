@@ -12,7 +12,7 @@ return {
 		previewme.setup({
 			keys = {
                 -- Sample of applying custom key binding
-				{ "n", "<leader>z", "<cmd>PreviewMeOpenInBuf<cr>", desc = "Opens the previewer" },
+				curr_window = { "<leader>z" },
 			},
 		})
 	end,
