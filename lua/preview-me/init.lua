@@ -16,6 +16,7 @@ function M.setup(config)
 		print("Binding = ", config.keys[1][1])
 		print("Command = ", config.keys[1][2])
 		print("Keybindings = ", keybindings)
+		print("Passing = ", config.keys[1])
 		keybindings.update_key_binding(config.keys[1])
 	end
 end
