@@ -11,17 +11,22 @@ function M.open_in_buf()
 	windower.open_in_curr_window()
 end
 
+function M.split_v_ref()
+	windower.split_v_ref()
+end
+
+function M.split_h_ref()
+	windower.split_h_ref()
+end
+
+function M.open_in_new_tab()
+	windower.open_in_new_tab()
+end
+
 function M.setup(config)
 	if config.keys ~= nil then
-		print("Binding = ", config.keys[1][1])
-		print("Command = ", config.keys[1][2])
-		print("Keybindings = ", keybindings)
-		print("Passing = ", config.keys[1])
-		if keybindings ~= nil then
-			print("Applying custom key bindings...")
-            keybindings.update_key_binding(config.keys[1])
-        else
-            print("Couldn't find keybindings module to apply custom bindings...")
+		for _, custombind in pairs(config.keys) do
+			keybindings.update_key_binding(custombind)
 		end
 	end
 end

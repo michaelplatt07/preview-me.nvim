@@ -7,17 +7,14 @@ local keybindings = {
 }
 
 function keybindings.update_key_binding(custombind)
-	print("Custombind = ", custombind)
-	print("In update key binding, value = ", custombind[1])
-	print("In update key binding, cmd = ", custombind[2])
 	keybindings.curr_window[1] = custombind[1]
 	keybindings.curr_window[2] = custombind[2]
 end
 
 function keybindings.map_keys(buf)
-	vim.api.nvim_buf_set_keymap(buf, "n", "<leader>vs", ':lua require("preview-me.windower").split_v_ref()<CR>', {})
-	vim.api.nvim_buf_set_keymap(buf, "n", "<leader>hs", ':lua require("preview-me.windower").split_h_ref()<CR>', {})
-	vim.api.nvim_buf_set_keymap(buf, "n", "<leader>t", ':lua require("preview-me.windower").open_in_new_tab()<CR>', {})
+	vim.api.nvim_buf_set_keymap(buf, keybindings.split_v[1], keybindings.split_v[2], keybindings.split_v[3], {})
+	vim.api.nvim_buf_set_keymap(buf, keybindings.split_h[1], keybindings.split_h[2], keybindings.split_h[3], {})
+	vim.api.nvim_buf_set_keymap(buf, keybindings.new_tab[1], keybindings.new_tab[2], keybindings.new_tab[3], {})
 	vim.api.nvim_buf_set_keymap(
 		buf,
 		keybindings.curr_window[1],
