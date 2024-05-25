@@ -17,6 +17,9 @@ function M.setup(config)
 		print("Command = ", config.keys[1][2])
 		print("Keybindings = ", keybindings)
 		print("Passing = ", config.keys[1])
+		if keybindings == nil then
+			print("Default keybindings could not be found...")
+		end
 		keybindings.update_key_binding(config.keys[1])
 	end
 end
