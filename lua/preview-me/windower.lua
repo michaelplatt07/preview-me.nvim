@@ -62,8 +62,7 @@ function windower.split_v_ref()
 	local uri = data.uri
 	local row = data.range.start.line
 	local col = data.range.start.character
-	vim.api.nvim_win_close(state.referenceWin, false)
-	vim.api.nvim_win_close(state.previewWin, false)
+    windower.close_window()
 	vim.cmd("vsplit")
 	local newCurWindow = vim.api.nvim_get_current_win()
 	local buf = vim.uri_to_bufnr(uri)
