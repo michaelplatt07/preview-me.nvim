@@ -17,10 +17,12 @@ function M.setup(config)
 		print("Command = ", config.keys[1][2])
 		print("Keybindings = ", keybindings)
 		print("Passing = ", config.keys[1])
-		if keybindings == nil then
-			print("Default keybindings could not be found...")
+		if keybindings ~= nil then
+			print("Applying custom key bindings...")
+            keybindings.update_key_binding(config.keys[1])
+        else
+            print("Couldn't find keybindings module to apply custom bindings...")
 		end
-		keybindings.update_key_binding(config.keys[1])
 	end
 end
 
