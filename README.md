@@ -37,10 +37,10 @@ As such, the functionality is fairly limited (as compared to a more robust plugi
 * Find references to a function or variable
 * Preview the line number, file containing the reference, and a preview around the reference for context
 * Open the file in a number of ways:
-** Open in the current tab
-** Open in a new tab
-** Open in a new buffer after splitting the current buffer vertically
-** Open in a new buffer after splitting the current buffer horizontally
+    * Open in the current tab
+    * Open in a new tab
+    * Open in a new buffer after splitting the current buffer vertically
+    * Open in a new buffer after splitting the current buffer horizontally
 
 ## Configuration
 The plugin does not offer global keybindings. They are instead scoped to the preview buffer only so users won't have
