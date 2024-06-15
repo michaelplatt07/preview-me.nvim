@@ -22,15 +22,19 @@ function previewer.open_references()
 	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 		buffer = state.referenceBuf,
 		callback = function()
-			state.update_selected_row()
-			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
-			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+			if #state.lines > 0 then
+				state.update_selected_row()
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+			end
 		end,
 	})
 
 	-- Populate the buffers with the reference information and previews
-	vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
-	vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+	if #state.lines > 0 then
+		vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
+		vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+	end
 
 	-- Create the windows and set them in the state
 	state.referenceWin = windower.create_floating_window(
