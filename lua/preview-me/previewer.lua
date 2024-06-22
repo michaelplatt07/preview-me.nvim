@@ -12,7 +12,7 @@ config.init()
 function previewer.open_references()
 	-- Get the references and set them on the state
 	local params = vim.lsp.util.make_position_params()
-	local references, err = vim.lsp.buf_request_sync(0, "textDocument/references", params, 1000)
+	local references, err = vim.lsp.buf_request_sync(0, "textDocument/references", params, 5000)
 	if err then
 		print(string.format("Got an error: %s", err))
 	end
