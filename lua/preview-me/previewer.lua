@@ -60,11 +60,7 @@ function previewer.open_references()
 	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", false)
 
 	-- Set the filetype for the buffer
-	vim.api.nvim_buf_set_option(
-		state.previewBuf,
-		"filetype",
-		util.get_file_type(state.lineToDataMap[vim.api.nvim_win_get_cursor(0)[1]])
-	)
+	vim.api.nvim_buf_set_option(state.previewBuf, "filetype", util.get_file_type(state.currentLineData.uri))
 
 	-- Enable syntax highlighting for the buffer
 	vim.api.nvim_buf_call(state.previewBuf, function()
