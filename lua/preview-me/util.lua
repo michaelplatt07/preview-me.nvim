@@ -45,4 +45,11 @@ function util.generate_preview(uri, start_line)
 	return retLines
 end
 
+function util.get_file_type(path)
+	local dot_idx = string.find(string.reverse(path), "%.")
+	if dot_idx ~= nil then
+		return string.sub(path, #path - dot_idx + 2, #path)
+	end
+end
+
 return util

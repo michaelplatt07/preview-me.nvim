@@ -2,6 +2,7 @@ local state = require("preview-me.state")
 local config = require("preview-me.config")
 local keybindings = require("preview-me.keybindings")
 local windower = require("preview-me.windower")
+local util = require("preview-me.util")
 local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching
@@ -37,8 +38,11 @@ function previewer.open_references()
 		vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
 	end
 
+	-- Set the filetype for the buffer
+	vim.api.nvim_buf_set_option(state.previewBuf, "filetype", util.get_file_type(state.currentLineData.uri))
+
 	-- Create the windows and set them in the state
-	state.referenceWin = windower.create_floating_window(
+	state.referenceWin = windower.create_references_window(
 		state.referenceBuf,
 		true,
 		config.referencesWindowRow,
@@ -47,7 +51,7 @@ function previewer.open_references()
 		config.height,
 		"References"
 	)
-	state.previewWin = windower.create_floating_window(
+	state.previewWin = windower.create_preview_window(
 		state.previewBuf,
 		false,
 		config.previewWindowRow,
@@ -62,6 +66,7 @@ function previewer.open_references()
 
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", false)
+	-- TODO(map) Figure out how to make the preview buffer not be able to me modified
 end
 
 return previewer
