@@ -66,11 +66,7 @@ function previewer.open_references()
 
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", false)
-
-	-- Enable syntax highlighting for the buffer
-	-- vim.api.nvim_buf_call(state.previewBuf, function()
-	-- 	vim.cmd("setlocal syntax=on")
-	-- end)
+	vim.api.nvim_buf_set_option(state.previewBuf, "modifiable", false)
 end
 
 return previewer

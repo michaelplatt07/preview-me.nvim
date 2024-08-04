@@ -31,6 +31,7 @@ end
 function windower.close_window()
 	-- Reset modifiable flag so the buffer can be updated on the next search
 	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", true)
+	vim.api.nvim_buf_set_option(state.previewBuf, "modifiable", true)
 
 	-- Close the buffers and recreate them
 	vim.api.nvim_buf_delete(state.referenceBuf, { force = true })
