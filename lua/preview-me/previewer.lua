@@ -13,7 +13,8 @@ config.init()
 function previewer.open_references()
 	-- Get the references and set them on the state
 	local params = vim.lsp.util.make_position_params()
-	local references, err = vim.lsp.buf_request_sync(0, "textDocument/references", params, 1000)
+	params.context = { includeDeclaration = true }
+	local references, err = vim.lsp.buf_request_sync(0, "textDocument/references", params, 5000)
 	if err then
 		print(string.format("Got an error: %s", err))
 	end
@@ -23,15 +24,19 @@ function previewer.open_references()
 	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 		buffer = state.referenceBuf,
 		callback = function()
-			state.update_selected_row()
-			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
-			vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+			if #state.lines > 0 then
+				state.update_selected_row()
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+			end
 		end,
 	})
 
 	-- Populate the buffers with the reference information and previews
-	vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
-	vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+	if #state.lines > 0 then
+		vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
+		vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+	end
 
 	-- Create the windows and set them in the state
 	state.referenceWin = windower.create_floating_window(
