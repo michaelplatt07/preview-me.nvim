@@ -46,9 +46,9 @@ function util.generate_preview(uri, start_line)
 end
 
 function util.get_file_type(path)
-	local dot_idx = string.find(path, "[.]")
+	local dot_idx = string.find(string.reverse(path), "%.")
 	if dot_idx ~= nil then
-		return string.sub(path, dot_idx + 1, #path)
+		return string.sub(path, #path - dot_idx + 2, #path)
 	end
 end
 
