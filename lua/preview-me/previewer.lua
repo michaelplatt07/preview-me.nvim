@@ -2,6 +2,7 @@ local state = require("preview-me.state")
 local config = require("preview-me.config")
 local keybindings = require("preview-me.keybindings")
 local windower = require("preview-me.windower")
+local util = require("preview-me.util")
 local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching
@@ -31,6 +32,18 @@ function previewer.open_references()
 	-- Populate the buffers with the reference information and previews
 	vim.api.nvim_buf_set_lines(state.referenceBuf, 0, 2, false, state.lines)
 	vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+
+	-- Set the filetype for the buffer
+	vim.api.nvim_buf_set_option(
+		state.previewBuf,
+		"filetype",
+		util.get_file_type(state.lineToDataMap[vim.api.nvim_win_get_cursor(0)[1]])
+	)
+
+	-- Enable syntax highlighting for the buffer
+	vim.api.nvim_buf_call(state.previewBuf, function()
+		vim.cmd("setlocal syntax=on")
+	end)
 
 	-- Create the windows and set them in the state
 	state.referenceWin = windower.create_floating_window(
