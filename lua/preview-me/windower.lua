@@ -3,7 +3,7 @@ local state = require("preview-me.state")
 local windower = {}
 
 -- TODO(map) Is there a better way to pass the data here? Maybe create a struct to hold the buffer handle, window, and configs?
-function windower.create_floating_window(buf, active, row, col, width, height, title)
+function windower.create_references_window(buf, active, row, col, width, height, title)
 	return vim.api.nvim_open_win(buf, active, {
 		relative = "editor",
 		row = row,
@@ -12,6 +12,18 @@ function windower.create_floating_window(buf, active, row, col, width, height, t
 		height = height,
 		border = "double",
 		style = "minimal",
+		title = title,
+	})
+end
+
+function windower.create_preview_window(buf, active, row, col, width, height, title)
+	return vim.api.nvim_open_win(buf, active, {
+		relative = "editor",
+		row = row,
+		col = col,
+		width = width,
+		height = height,
+		border = "double",
 		title = title,
 	})
 end

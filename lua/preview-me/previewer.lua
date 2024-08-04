@@ -38,8 +38,11 @@ function previewer.open_references()
 		vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
 	end
 
+	-- Set the filetype for the buffer
+	vim.api.nvim_buf_set_option(state.previewBuf, "filetype", util.get_file_type(state.currentLineData.uri))
+
 	-- Create the windows and set them in the state
-	state.referenceWin = windower.create_floating_window(
+	state.referenceWin = windower.create_references_window(
 		state.referenceBuf,
 		true,
 		config.referencesWindowRow,
@@ -48,7 +51,7 @@ function previewer.open_references()
 		config.height,
 		"References"
 	)
-	state.previewWin = windower.create_floating_window(
+	state.previewWin = windower.create_preview_window(
 		state.previewBuf,
 		false,
 		config.previewWindowRow,
@@ -64,13 +67,10 @@ function previewer.open_references()
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(state.referenceBuf, "modifiable", false)
 
-	-- Set the filetype for the buffer
-	vim.api.nvim_buf_set_option(state.previewBuf, "filetype", util.get_file_type(state.currentLineData.uri))
-
 	-- Enable syntax highlighting for the buffer
-	vim.api.nvim_buf_call(state.previewBuf, function()
-		vim.cmd("setlocal syntax=on")
-	end)
+	-- vim.api.nvim_buf_call(state.previewBuf, function()
+	-- 	vim.cmd("setlocal syntax=on")
+	-- end)
 end
 
 return previewer
