@@ -30,6 +30,14 @@ function M.setup(config)
 				keybindings.update_key_binding(func, custombind)
 			end
 		end
+		if config.preferences ~= nil then
+			for property, value in pairs(config.preview) do
+				if property == "linesBefore" then
+				elseif property == "linesAfter" then
+				else
+				end
+			end
+		end
 	end
 end
 

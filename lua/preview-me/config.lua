@@ -9,6 +9,8 @@ function config.init()
 	config.referencesWindowCol = vim.api.nvim_win_get_width(current_win) * 0.1
 	config.previewWindowRow = vim.api.nvim_win_get_height(current_win) * 0.2
 	config.previewWindowCol = vim.api.nvim_win_get_width(current_win) * 0.51
+	config.lineBeforeCount = nil
+	config.lineAfterCount = nil
 end
 
 return config

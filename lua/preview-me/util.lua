@@ -1,3 +1,4 @@
+local config = require("preview-me.config")
 local util = {}
 
 function load_contents(bufnr)
@@ -39,8 +40,13 @@ function util.generate_preview(uri, start_line)
 		print("Error")
 	end
 
-	for lineNum = start_line - 2, start_line + 4 do
-		table.insert(retLines, lines[lineNum])
+	-- TODO(map) Handle overridden config values here
+	if config.lineBeforeCount ~= nil then
+	end
+	if config.lineAfterCount ~= nil then
+	end
+	for line in lines do
+		table.insert(retLines, line)
 	end
 	return retLines
 end

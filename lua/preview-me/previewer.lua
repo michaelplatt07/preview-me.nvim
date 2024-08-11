@@ -60,6 +60,8 @@ function previewer.open_references()
 		config.height,
 		"Preview"
 	)
+	-- Set the cursor to the correct line
+	vim.api.nvim_window_set_cursor(state.previewWin, { state.lineToDataMap[1].range.start.line, 0 })
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
