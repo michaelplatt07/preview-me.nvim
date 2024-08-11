@@ -45,7 +45,7 @@ function util.generate_preview(uri, start_line)
 	end
 	if config.lineAfterCount ~= nil then
 	end
-	for line in lines do
+	for _, line in ipairs(lines) do
 		table.insert(retLines, line)
 	end
 	return retLines
