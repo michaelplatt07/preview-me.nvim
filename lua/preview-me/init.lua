@@ -32,7 +32,7 @@ function M.setup(config)
 			end
 		end
 		if config.preferences ~= nil then
-			for property, value in pairs(config.preview) do
+			for property, value in pairs(config.preferences) do
 				if property == "linesBefore" then
 					app_config.lineBeforeCount = value
 				elseif property == "linesAfter" then
