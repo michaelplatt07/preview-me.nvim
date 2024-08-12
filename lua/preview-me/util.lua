@@ -40,7 +40,7 @@ function util.generate_preview(uri, start_line)
 		print("Error")
 	end
 
-	local lineBeforeCount = start_line + 1
+	local lineBeforeCount = start_line
 	local lineAfterCount = #lines
 	if config.lineBeforeCount ~= nil then
 		lineBeforeCount = config.lineBeforeCount
