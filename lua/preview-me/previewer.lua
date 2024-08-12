@@ -65,16 +65,16 @@ function previewer.open_references()
 		"Preview"
 	)
 	-- Set the cursor to the correct line
-	-- If there is no line before count we know that the relative zero in the buffer is the start of the file so we can
-	-- use the start line from the LSP info to set the cursor
 	if config.lineBeforeCount == nil then
+		-- No config provided so we can just use the start line
 		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
-	elseif state.currentLineData.range.start.line - config.lineBeforeCount < 0 then
-		-- If line in the file referenced minus the lineBeforeCount is negative, then we know that we can just set the
-		-- cursor to the start line from the LSP info because we are showing all lines before.
+	elseif config.lineBeforeCount > state.currentLineData.range.start.line then
+		-- Case when line before count is greater than start line which means we are displaying all the lines before
+		-- the line of interest so we can use the start line
 		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
 	else
-		-- Otherwise, we need to pass the line before count because that is relative 0 position for the reference
+		-- Case when line before count is less than start line which means we need to set the new relative position
+		-- based on the lineBeforeCount being the zero starting point
 		vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount, 0 })
 	end
 
