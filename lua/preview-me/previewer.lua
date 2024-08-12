@@ -28,6 +28,9 @@ function previewer.open_references()
 				state.update_selected_row()
 				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
 				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+
+                -- Set the new currsor position based on the updated selected row
+	            vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
 			end
 		end,
 	})
@@ -61,7 +64,7 @@ function previewer.open_references()
 		"Preview"
 	)
 	-- Set the cursor to the correct line
-	vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
+	vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
