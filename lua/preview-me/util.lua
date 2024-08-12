@@ -40,14 +40,25 @@ function util.generate_preview(uri, start_line)
 		print("Error")
 	end
 
-	-- TODO(map) Handle overridden config values here
+	local startLineNum = 0
+	local endLineNum = #lines
 	if config.lineBeforeCount ~= nil then
+		startLineNum = config.lineBeforeCount
 	end
 	if config.lineAfterCount ~= nil then
+		endLineNum = config.lineAfterCount
 	end
-	for _, line in ipairs(lines) do
-		table.insert(retLines, line)
+	for i = start_line - startLineNum, start_line + endLineNum, 1 do
+		-- If we are going to grab a line that would be before the first line in the file or beyond the maximum line
+		-- count of the file then just don't try to add it. This may not be the best way though.
+		if i >= 0 and i < #lines then
+			table.insert(retLines, lines[i])
+		end
 	end
+
+	-- for _, line in ipairs(lines) do
+	-- 	table.insert(retLines, line)
+	-- end
 	return retLines
 end
 
