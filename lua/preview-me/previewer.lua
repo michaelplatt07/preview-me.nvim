@@ -33,7 +33,7 @@ function previewer.open_references()
 				if config.lineBeforeCount == nil then
 					-- No config provided so we can just use the start line
 					vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
-				elseif config.lineBeforeCount > tonumber(state.currentLineData.range.start.line) then
+				elseif config.lineBeforeCount > state.currentLineData.range.start.line then
 					-- Case when line before count is greater than start line which means we are displaying all the lines before
 					-- the line of interest so we can use the start line
 					vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
@@ -78,7 +78,7 @@ function previewer.open_references()
 	if config.lineBeforeCount == nil then
 		-- No config provided so we can just use the start line
 		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
-	elseif config.lineBeforeCount > tonumber(state.currentLineData.range.start.line) then
+	elseif config.lineBeforeCount > state.currentLineData.range.start.line then
 		-- Case when line before count is greater than start line which means we are displaying all the lines before
 		-- the line of interest so we can use the start line
 		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })

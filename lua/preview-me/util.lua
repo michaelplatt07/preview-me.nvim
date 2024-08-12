@@ -48,7 +48,7 @@ function util.generate_preview(uri, start_line)
 	if config.lineAfterCount ~= nil then
 		lineAfterCount = config.lineAfterCount
 	end
-	for i = start_line - lineBeforeCount, start_line + lineAfterCount, 1 do
+	for i = start_line - lineBeforeCount + 1, start_line + lineAfterCount, 1 do
 		-- If we are going to grab a line that would be before the first line in the file or beyond the maximum line
 		-- count of the file then just don't try to add it. This may not be the best way though.
 		if i >= 0 and i < #lines then
