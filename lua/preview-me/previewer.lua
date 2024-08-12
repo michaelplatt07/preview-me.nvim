@@ -64,7 +64,7 @@ function previewer.open_references()
 		"Preview"
 	)
 	-- Set the cursor to the correct line
-	vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
+	vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount, 0 })
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
