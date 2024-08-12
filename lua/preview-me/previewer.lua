@@ -30,6 +30,7 @@ function previewer.open_references()
 				vim.api.nvim_buf_set_lines(state.previewBuf, 0, #state.currentPreview, false, state.currentPreview)
 
 				-- Set the new currsor position based on the updated selected row
+				-- TODO(map) Update me to match the other setting of the cursor
 				vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
 			end
 		end,
@@ -64,7 +65,18 @@ function previewer.open_references()
 		"Preview"
 	)
 	-- Set the cursor to the correct line
-	vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount, 0 })
+	-- If there is no line before count we know that the relative zero in the buffer is the start of the file so we can
+	-- use the start line from the LSP info to set the cursor
+	if config.lineBeforeCount == nil then
+		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
+	elseif state.currentLineData.range.start.line - config.lineBeforeCount < 0 then
+		-- If line in the file referenced minus the lineBeforeCount is negative, then we know that we can just set the
+		-- cursor to the start line from the LSP info because we are showing all lines before.
+		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line, 0 })
+	else
+		-- Otherwise, we need to pass the line before count because that is relative 0 position for the reference
+		vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount, 0 })
+	end
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
