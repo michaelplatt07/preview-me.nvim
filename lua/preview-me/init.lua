@@ -1,6 +1,7 @@
 local previewer = require("preview-me.previewer")
 local windower = require("preview-me.windower")
 local keybindings = require("preview-me.keybindings")
+local app_config = require("preview-me.config")
 local M = {}
 
 function M.open()
@@ -28,6 +29,16 @@ function M.setup(config)
 		if config.keys ~= nil then
 			for func, custombind in pairs(config.keys) do
 				keybindings.update_key_binding(func, custombind)
+			end
+		end
+		if config.preferences ~= nil then
+			for property, value in pairs(config.preferences) do
+				if property == "linesBefore" then
+					app_config.lineBeforeCount = value
+				elseif property == "linesAfter" then
+					app_config.lineAfterCount = value
+				else
+				end
 			end
 		end
 	end

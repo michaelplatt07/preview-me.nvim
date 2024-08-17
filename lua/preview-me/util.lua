@@ -1,3 +1,4 @@
+local config = require("preview-me.config")
 local util = {}
 
 function load_contents(bufnr)
@@ -39,9 +40,22 @@ function util.generate_preview(uri, start_line)
 		print("Error")
 	end
 
-	for lineNum = start_line - 2, start_line + 4 do
-		table.insert(retLines, lines[lineNum])
+	local lineBeforeCount = start_line
+	local lineAfterCount = #lines
+	if config.lineBeforeCount ~= nil then
+		lineBeforeCount = config.lineBeforeCount
 	end
+	if config.lineAfterCount ~= nil then
+		lineAfterCount = config.lineAfterCount
+	end
+	for i = start_line - lineBeforeCount + 1, start_line + lineAfterCount, 1 do
+		-- If we are going to grab a line that would be before the first line in the file or beyond the maximum line
+		-- count of the file then just don't try to add it. This may not be the best way though.
+		if i >= 0 and i < #lines then
+			table.insert(retLines, lines[i])
+		end
+	end
+
 	return retLines
 end
 

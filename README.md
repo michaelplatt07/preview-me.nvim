@@ -14,12 +14,25 @@ return {
                 -- Sample of applying custom key binding
 				curr_window = { "<leader>z" },
 			},
+            preferences = {
+                -- sample of applying preferences for previewing a certain number of lines before and after the
+                -- reference line. This will show the 3 lines before the reference line and 10 lines after
+                linesBefore = 3,
+                linesAfter = 10,
+            },
+            }
 		})
 	end,
 }
 ```
 In the above code, the command to open the preview in the current buffer is being bound to the `<leader>z` button instead
 of the default `<leader>o`.
+
+It will also set the number of lines to show before the reference in the preview buffer to 3 and the number of lines
+to show after the reference in the preview buffer to 10.
+<b>Note:<\b> While there is some basic error check for large numbers, like in case of `linesBefore = 1500` and there are
+only 10 lines before the reference, it's generally better to just not set a value if you don't want limit the number of
+lines to show in the preview buffer.
 
 Then in the `init.lua` file simply include the following to be able to call the plugin's entry command.
 ```lua

@@ -26,8 +26,22 @@ function previewer.open_references()
 		callback = function()
 			if #state.lines > 0 then
 				state.update_selected_row()
-				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, {})
-				vim.api.nvim_buf_set_lines(state.previewBuf, 0, 6, false, state.currentPreview)
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, #state.currentPreview, false, {})
+				vim.api.nvim_buf_set_lines(state.previewBuf, 0, #state.currentPreview, false, state.currentPreview)
+
+				-- Set the new currsor position based on the updated selected row
+				if config.lineBeforeCount == nil then
+					-- No config provided so we can just use the start line
+					vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
+				elseif config.lineBeforeCount > state.currentLineData.range.start.line then
+					-- Case when line before count is greater than start line which means we are displaying all the lines before
+					-- the line of interest so we can use the start line
+					vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
+				else
+					-- Case when line before count is less than start line which means we need to set the new relative position
+					-- based on the lineBeforeCount being the zero starting point
+					vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount + 1, 0 })
+				end
 			end
 		end,
 	})
@@ -60,6 +74,19 @@ function previewer.open_references()
 		config.height,
 		"Preview"
 	)
+	-- Set the cursor to the correct line
+	if config.lineBeforeCount == nil then
+		-- No config provided so we can just use the start line
+		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
+	elseif config.lineBeforeCount > state.currentLineData.range.start.line then
+		-- Case when line before count is greater than start line which means we are displaying all the lines before
+		-- the line of interest so we can use the start line
+		vim.api.nvim_win_set_cursor(state.previewWin, { state.currentLineData.range.start.line + 1, 0 })
+	else
+		-- Case when line before count is less than start line which means we need to set the new relative position
+		-- based on the lineBeforeCount being the zero starting point
+		vim.api.nvim_win_set_cursor(state.previewWin, { config.lineBeforeCount + 1, 0 })
+	end
 
 	-- Initialize key bindings
 	keybindings.map_keys(state.referenceBuf)
