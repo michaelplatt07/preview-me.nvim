@@ -56,9 +56,6 @@ function util.generate_preview(uri, start_line)
 		end
 	end
 
-	-- for _, line in ipairs(lines) do
-	-- 	table.insert(retLines, line)
-	-- end
 	return retLines
 end
 
