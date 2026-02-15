@@ -36,7 +36,7 @@ function keybindings.map_keys(buf)
 	vim.keymap.set(keybindings.curr_window_enter.mode, keybindings.curr_window_enter.key, function()
 		require("preview-me.windower").open_in_curr_window()
 	end, { buffer = buf })
-	vim.keymap.set(keybindings.quite.mode, keybindings.quite.key, function()
+	vim.keymap.set(keybindings.quit.mode, keybindings.quit.key, function()
 		require("preview-me.windower").close_window()
 	end, { buffer = buf })
 end
