@@ -7,7 +7,7 @@ local keybindings = {
 	new_tab = { mode = "n", key = "<C-t>" },
 	curr_window = {
 		mode = "n",
-		key = "C-o>",
+		key = "<C-o>",
 	},
 	curr_window_enter = {
 		mode = "n",
