@@ -1,9 +1,19 @@
 local keybindings = {
-	split_v = { "n", "<leader>vs", ':lua require("preview-me.windower").split_v_ref()<CR>', {} },
-	split_h = { "n", "<leader>hs", ':lua require("preview-me.windower").split_h_ref()<CR>', {} },
-	new_tab = { "n", "<leader>t", ':lua require("preview-me.windower").open_in_new_tab()<CR>', {} },
-	curr_window = { "n", "<leader>o", ':lua require("preview-me.windower").open_in_curr_window()<CR>', {} },
-	quit = { "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {} },
+	split_v = {
+		mode = "n",
+		key = "<C-v>",
+	},
+	split_h = { mode = "n", key = "<C-h>" },
+	new_tab = { mode = "n", key = "<C-t>" },
+	curr_window = {
+		mode = "n",
+		key = "C-o>",
+	},
+	curr_window_enter = {
+		mode = "n",
+		key = "<CR>",
+	},
+	quit = { mode = "n", key = "q" },
 }
 
 function keybindings.update_key_binding(func, custombind)
@@ -11,17 +21,24 @@ function keybindings.update_key_binding(func, custombind)
 end
 
 function keybindings.map_keys(buf)
-	vim.api.nvim_buf_set_keymap(buf, keybindings.split_v[1], keybindings.split_v[2], keybindings.split_v[3], {})
-	vim.api.nvim_buf_set_keymap(buf, keybindings.split_h[1], keybindings.split_h[2], keybindings.split_h[3], {})
-	vim.api.nvim_buf_set_keymap(buf, keybindings.new_tab[1], keybindings.new_tab[2], keybindings.new_tab[3], {})
-	vim.api.nvim_buf_set_keymap(
-		buf,
-		keybindings.curr_window[1],
-		keybindings.curr_window[2],
-		keybindings.curr_window[3],
-		{}
-	)
-	vim.api.nvim_buf_set_keymap(buf, "n", "q", ':lua require("preview-me.windower").close_window()<CR>', {})
+	vim.keymap.set(keybindings.split_v.mode, keybindings.split_v.key, function()
+		require("preview-me.windower").split_v_ref()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.split_h.mode, keybindings.split_h.key, function()
+		require("preview-me.windower").split_h_ref()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.new_tab.mode, keybindings.new_tab.key, function()
+		require("preview-me.windower").open_in_new_tab()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.curr_window.mode, keybindings.curr_window.key, function()
+		require("preview-me.windower").open_in_curr_window()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.curr_window_enter.mode, keybindings.curr_window_enter.key, function()
+		require("preview-me.windower").open_in_curr_window()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.quite.mode, keybindings.quite.key, function()
+		require("preview-me.windower").close_window()
+	end, { buffer = buf })
 end
 
 return keybindings
