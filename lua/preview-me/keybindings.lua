@@ -1,19 +1,20 @@
 local keybindings = {
 	split_v = {
 		mode = "n",
-		key = "<C-v>",
+		key = "v",
 	},
-	split_h = { mode = "n", key = "<C-h>" },
-	new_tab = { mode = "n", key = "<C-t>" },
+	split_h = { mode = "n", key = "h" },
+	new_tab = { mode = "n", key = "t" },
 	curr_window = {
 		mode = "n",
-		key = "<C-o>",
+		key = "o",
 	},
 	curr_window_enter = {
 		mode = "n",
 		key = "<CR>",
 	},
 	quit = { mode = "n", key = "q" },
+	quit_esc = { mode = "n", key = "<Esc>" },
 }
 
 function keybindings.update_key_binding(func, custombind)
@@ -37,6 +38,9 @@ function keybindings.map_keys(buf)
 		require("preview-me.windower").open_in_curr_window()
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.quit.mode, keybindings.quit.key, function()
+		require("preview-me.windower").close_window()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.quit_esc.mode, keybindings.quit_esc.key, function()
 		require("preview-me.windower").close_window()
 	end, { buffer = buf })
 end
