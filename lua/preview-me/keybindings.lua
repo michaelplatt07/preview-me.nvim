@@ -18,7 +18,7 @@ local keybindings = {
 }
 
 function keybindings.update_key_binding(func, custombind)
-	keybindings[func][2] = custombind[1]
+	keybindings[func].key = custombind
 end
 
 function keybindings.map_keys(buf)
