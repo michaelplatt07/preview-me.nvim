@@ -96,4 +96,41 @@ function previewer.open_references()
 	-- TODO(map) Figure out how to make the preview buffer not be able to me modified
 end
 
+function previewer.move_cursor_down()
+	-- Get the preview window handle
+	local cursorPos = vim.api.nvim_win_get_cursor(state.previewWin)[1]
+	if cursorPos + 1 < #vim.api.nvim_buf_get_lines(state.previewBuf, 0, -1, true) then
+		vim.api.nvim_win_set_cursor(state.previewWin, { cursorPos + 1, 0 })
+	end
+end
+
+function previewer.page_cursor_down()
+	-- Get the preview window handle
+	local cursorPos = vim.api.nvim_win_get_cursor(state.previewWin)[1]
+	local lineCount = #vim.api.nvim_buf_get_lines(state.previewBuf, 0, -1, true)
+	if cursorPos + 10 < lineCount then
+		vim.api.nvim_win_set_cursor(state.previewWin, { cursorPos + 10, 0 })
+	else
+		vim.api.nvim_win_set_cursor(state.previewWin, { lineCount, 0 })
+	end
+end
+
+function previewer.move_cursor_up()
+	-- Get the preview window handle
+	local cursorPos = vim.api.nvim_win_get_cursor(state.previewWin)[1]
+	if cursorPos - 1 > 0 then
+		vim.api.nvim_win_set_cursor(state.previewWin, { cursorPos - 1, 0 })
+	end
+end
+
+function previewer.page_cursor_up()
+	-- Get the preview window handle
+	local cursorPos = vim.api.nvim_win_get_cursor(state.previewWin)[1]
+	if cursorPos - 10 > 0 then
+		vim.api.nvim_win_set_cursor(state.previewWin, { cursorPos - 10, 0 })
+	else
+		vim.api.nvim_win_set_cursor(state.previewWin, { 1, 0 })
+	end
+end
+
 return previewer
