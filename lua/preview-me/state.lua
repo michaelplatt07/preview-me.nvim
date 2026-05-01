@@ -1,8 +1,11 @@
 local state = {
-	previewBuf = vim.api.nvim_create_buf(false, true),
-	referenceBuf = vim.api.nvim_create_buf(false, true),
-	previewWin = nil,
-	referenceWin = nil,
+	lines = nil,
+	previews = nil,
+	lineToDataMap = nil,
+	currentLineData = nil,
+	currentPreview = nil,
+	lineBeforeCount = nil,
+	lineAfterCount = nil,
 }
 
 local util = require("preview-me.util")

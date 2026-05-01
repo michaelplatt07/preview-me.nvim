@@ -1,28 +1,71 @@
 local utils = {}
 
 function utils.reset_nvim()
-	-- Close floating windows
-	for _, win in ipairs(vim.api.nvim_list_wins()) do
+	vim.cmd("silent! %bwipeout!")
+	vim.cmd("enew!")
+	vim.cmd("silent! only")
+
+	-- Handle floating windows if they are still opened
+	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
 		local config = vim.api.nvim_win_get_config(win)
 		if config.relative ~= "" then
-			vim.api.nvim_win_close(win, true)
+			pcall(vim.api.nvim_win_close, win, true)
 		end
 	end
+end
 
-	-- Close all normal windows except one
-	if #vim.api.nvim_tabpage_list_wins(0) > 1 then
-		vim.cmd("only")
-	end
-
-	-- Wipe all buffers except current
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if buf ~= vim.api.nvim_get_current_buf() then
-			vim.api.nvim_buf_delete(buf, { force = true })
-		end
-	end
-
-	-- Reset to empty buffer
-	vim.cmd("enew!")
+function utils.lsp_response()
+	local path = vim.fn.getcwd()
+	return {
+		{
+			context = {
+				bufnr = 260,
+				client_id = 1,
+				method = "textDocument/references",
+				params = {
+					context = {
+						includeDeclaration = true,
+					},
+					position = {
+						character = 14,
+						line = 2,
+					},
+					textDocument = {
+						uri = "file://" .. path .. "/lua/tests/fixtures/base.lua",
+					},
+				},
+				version = 0,
+			},
+			result = {
+				{
+					range = {
+						["end"] = {
+							character = 25,
+							line = 2,
+						},
+						start = {
+							character = 14,
+							line = 2,
+						},
+					},
+					uri = "file://" .. path .. "/lua/tests/fixtures/base.lua",
+				},
+				{
+					range = {
+						["end"] = {
+							character = 17,
+							line = 4,
+						},
+						start = {
+							character = 6,
+							line = 4,
+						},
+					},
+					uri = "file://" .. path .. "/lua/tests/fixtures/references.lua",
+				},
+			},
+		},
+	}
 end
 
 function utils.load_base_fixture()
