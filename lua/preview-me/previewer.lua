@@ -9,6 +9,9 @@ local previewer = {}
 -- Initialize the settings
 
 function previewer.open_references()
+	-- Init what we need
+	windower.init_required_buffers()
+
 	-- Get the references and set them on the state
 	local params = vim.lsp.util.make_position_params()
 	params.context = { includeDeclaration = true }
