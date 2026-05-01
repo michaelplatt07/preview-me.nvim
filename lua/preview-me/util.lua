@@ -1,4 +1,3 @@
-local config = require("preview-me.config")
 local util = {}
 
 function load_contents(bufnr)
@@ -28,7 +27,7 @@ function load_contents(bufnr)
 	return lines
 end
 
-function util.generate_preview(uri, start_line)
+function util.generate_preview(uri, start_line, stateLineBeforeCount, stateLineAfterCount)
 	local bufnr = vim.uri_to_bufnr(uri)
 	local retLines = {}
 	if bufnr == nil then
@@ -42,11 +41,11 @@ function util.generate_preview(uri, start_line)
 
 	local lineBeforeCount = start_line
 	local lineAfterCount = #lines
-	if config.lineBeforeCount ~= nil then
-		lineBeforeCount = config.lineBeforeCount
+	if stateLineBeforeCount ~= nil then
+		lineBeforeCount = stateLineBeforeCount
 	end
-	if config.lineAfterCount ~= nil then
-		lineAfterCount = config.lineAfterCount
+	if stateLineAfterCount ~= nil then
+		lineAfterCount = stateLineAfterCount
 	end
 	for i = start_line - lineBeforeCount + 1, start_line + lineAfterCount, 1 do
 		-- If we are going to grab a line that would be before the first line in the file or beyond the maximum line
