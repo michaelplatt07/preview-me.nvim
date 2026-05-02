@@ -1,8 +1,11 @@
 local state = {
-	previewBuf = vim.api.nvim_create_buf(false, true),
-	referenceBuf = vim.api.nvim_create_buf(false, true),
-	previewWin = nil,
-	referenceWin = nil,
+	lines = nil,
+	previews = nil,
+	lineToDataMap = nil,
+	currentLineData = nil,
+	currentPreview = nil,
+	lineBeforeCount = nil,
+	lineAfterCount = nil,
 }
 
 local util = require("preview-me.util")
@@ -14,7 +17,8 @@ function state.set_rows(references)
 	for _, reference in ipairs(references) do
 		if reference.result then
 			for idx, data in ipairs(reference.result) do
-				local previewLines = util.generate_preview(data.uri, data.range.start.line)
+				local previewLines =
+					util.generate_preview(data.uri, data.range.start.line, state.lineBeforeCount, state.lineAfterCount)
 				lineToDataMap[idx] = data
 				table.insert(
 					lines,
