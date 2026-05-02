@@ -26,6 +26,7 @@ function previewer.open_references()
 		buffer = windower.referenceBuf,
 		callback = function()
 			if #state.lines > 0 then
+				vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", true)
 				state.update_selected_row()
 				vim.api.nvim_buf_set_lines(windower.previewBuf, 0, #state.currentPreview, false, {})
 				vim.api.nvim_buf_set_lines(windower.previewBuf, 0, #state.currentPreview, false, state.currentPreview)
@@ -43,6 +44,7 @@ function previewer.open_references()
 					-- based on the lineBeforeCount being the zero starting point
 					vim.api.nvim_win_set_cursor(windower.previewWin, { state.lineBeforeCount + 1, 0 })
 				end
+				vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", false)
 			end
 		end,
 	})
@@ -78,7 +80,7 @@ function previewer.open_references()
 
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(windower.referenceBuf, "modifiable", false)
-	-- TODO(map) Figure out how to make the preview buffer not be able to me modified
+	vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", false)
 end
 
 local function _get_buff_data()
