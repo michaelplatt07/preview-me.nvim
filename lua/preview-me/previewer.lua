@@ -78,7 +78,7 @@ function previewer.open_references()
 
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(windower.referenceBuf, "modifiable", false)
-	-- TODO(map) Figure out how to make the preview buffer not be able to me modified
+	vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", false)
 end
 
 local function _get_buff_data()
