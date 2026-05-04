@@ -17,6 +17,8 @@ local keybindings = {
 	move_cursor_up = { mode = "n", key = "<C-p>" },
 	page_cursor_down = { mode = "n", key = "<C-d>" },
 	page_cursor_up = { mode = "n", key = "<C-u>" },
+	store_single_ref = { mode = "n", key = "s" },
+	store_all_ref = { mode = "n", key = "sa" },
 	quit = { mode = "n", key = "q" },
 	quit_esc = { mode = "n", key = "<Esc>" },
 }
@@ -59,6 +61,12 @@ function keybindings.map_keys(buf)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.page_cursor_up.mode, keybindings.page_cursor_up.key, function()
 		require("preview-me.previewer").page_cursor_up()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.store_single_ref.mode, keybindings.store_single_ref.key, function()
+		require("preview-me.previewer").store_single_ref()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.store_all_ref.mode, keybindings.store_all_ref.key, function()
+		require("preview-me.previewer").store_all_ref()
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.quit.mode, keybindings.quit.key, function()
 		require("preview-me.windower").close_window()

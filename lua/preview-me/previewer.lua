@@ -6,8 +6,6 @@ local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching
 
--- Initialize the settings
-
 function previewer.open_references()
 	-- Init what we need
 	windower.init_required_buffers()
@@ -81,6 +79,11 @@ function previewer.open_references()
 	-- Set buffer to not modifiable
 	vim.api.nvim_buf_set_option(windower.referenceBuf, "modifiable", false)
 	vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", false)
+end
+
+function previewer.open_saved_references()
+	windower.init_required_buffers()
+	windower.create_saved_refs_window()
 end
 
 local function _get_buff_data()
@@ -205,6 +208,16 @@ function previewer.page_cursor_up()
 		vim.api.nvim_win_set_cursor(windower.previewWin, { cursorPos - 10, 0 })
 	else
 		vim.api.nvim_win_set_cursor(windower.previewWin, { 1, 0 })
+	end
+end
+
+function previewer.store_single_ref()
+	state.save_reference(state.currentLineData)
+end
+
+function previewer.store_every_ref()
+	for _, data in pairs(state.lineToDataMap) do
+		state.save_reference(data)
 	end
 end
 

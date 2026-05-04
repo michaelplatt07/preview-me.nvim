@@ -1,4 +1,4 @@
-local utils = require("tests.utils")
+local testUtils = require("tests.utils")
 
 local previewer = nil
 local state = nil
@@ -45,7 +45,7 @@ end)
 describe("preview-me.move_cursor_down", function()
 	before_each(function()
 		reset_packages()
-		utils.reset_nvim()
+		testUtils.reset_nvim()
 	end)
 
 	it("Move the cursor position down one line", function()
@@ -53,7 +53,7 @@ describe("preview-me.move_cursor_down", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_base_fixture()
+		testUtils.load_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		assert.is_equal(vim.api.nvim_win_get_cursor(windower.previewWin)[1], 1)
@@ -69,7 +69,7 @@ end)
 describe("preview-me.move_cursor_up", function()
 	before_each(function()
 		reset_packages()
-		utils.reset_nvim()
+		testUtils.reset_nvim()
 	end)
 
 	it("Move the cursor position up one line", function()
@@ -77,7 +77,7 @@ describe("preview-me.move_cursor_up", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_base_fixture()
+		testUtils.load_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		vim.api.nvim_win_set_cursor(windower.previewWin, { 2, 0 })
@@ -94,7 +94,7 @@ end)
 describe("preview-me.page_cursor_down", function()
 	before_each(function()
 		reset_packages()
-		utils.reset_nvim()
+		testUtils.reset_nvim()
 	end)
 
 	it("Move the cursor position down ten lines because there was enough space", function()
@@ -102,7 +102,7 @@ describe("preview-me.page_cursor_down", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_larger_base_fixture()
+		testUtils.load_larger_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		assert.is_equal(vim.api.nvim_win_get_cursor(windower.previewWin)[1], 1)
@@ -119,7 +119,7 @@ describe("preview-me.page_cursor_down", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_larger_base_fixture()
+		testUtils.load_larger_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		vim.api.nvim_win_set_cursor(windower.previewWin, { 14, 0 })
@@ -136,7 +136,7 @@ end)
 describe("preview-me.page_cursor_up", function()
 	before_each(function()
 		reset_packages()
-		utils.reset_nvim()
+		testUtils.reset_nvim()
 	end)
 
 	it("Move the cursor position up ten lines because there was enough space", function()
@@ -144,7 +144,7 @@ describe("preview-me.page_cursor_up", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_larger_base_fixture()
+		testUtils.load_larger_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		vim.api.nvim_win_set_cursor(windower.previewWin, { 14, 0 })
@@ -162,7 +162,7 @@ describe("preview-me.page_cursor_up", function()
 		windower.init_required_buffers()
 		windower.create_preview_window()
 		vim.api.nvim_set_current_win(windower.previewWin)
-		utils.load_larger_base_fixture()
+		testUtils.load_larger_base_fixture()
 
 		-- Check that the cursor is in the right start position
 		vim.api.nvim_win_set_cursor(windower.previewWin, { 6, 0 })
@@ -173,5 +173,70 @@ describe("preview-me.page_cursor_up", function()
 
 		-- Ensure the cursor moved
 		assert.is_equal(vim.api.nvim_win_get_cursor(windower.previewWin)[1], 1)
+	end)
+end)
+
+describe("preview-me.open_stored_references", function()
+	before_each(function()
+		reset_packages()
+		testUtils.reset_nvim()
+	end)
+
+	it("Should open the stored references page", function() end)
+end)
+
+describe("preview-me.store_references", function()
+	before_each(function()
+		reset_packages()
+		testUtils.reset_nvim()
+	end)
+
+	it("Should store the single reference to be able to be opened later", function()
+		-- Local path for using in results
+		local path = vim.fn.getcwd()
+
+		-- Sample LSP response
+		local data = testUtils.lsp_response()
+
+		-- Set the lines in the references list
+		state.set_rows(data)
+
+		-- Set up the previewer and make it the current window
+		windower.init_required_buffers()
+		windower.create_references_window()
+		vim.api.nvim_set_current_win(windower.referenceWin)
+
+		-- Make the call
+		previewer.store_single_ref()
+
+		-- Assert the state was updated
+		assert.is_same(state.savedReferences, {
+			{ data = data[1].result[1], lineText = "3: 15 | file://" .. path .. "/lua/tests/fixtures/base.lua" },
+		})
+	end)
+
+	it("Should store every reference to be able to be opened later", function()
+		-- Local path for using in results
+		local path = vim.fn.getcwd()
+
+		-- Sample LSP response
+		local data = testUtils.lsp_response()
+
+		-- Set the lines in the references list
+		state.set_rows(data)
+
+		-- Set up the previewer and make it the current window
+		windower.init_required_buffers()
+		windower.create_references_window()
+		vim.api.nvim_set_current_win(windower.referenceWin)
+
+		-- Make the call
+		previewer.store_every_ref()
+
+		-- Assert the state was updated
+		assert.is_same(state.savedReferences, {
+			{ data = data[1].result[1], lineText = "3: 15 | file://" .. path .. "/lua/tests/fixtures/base.lua" },
+			{ data = data[1].result[2], lineText = "5: 7 | file://" .. path .. "/lua/tests/fixtures/references.lua" },
+		})
 	end)
 end)

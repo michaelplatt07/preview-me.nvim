@@ -6,6 +6,7 @@ local state = {
 	currentPreview = nil,
 	lineBeforeCount = nil,
 	lineAfterCount = nil,
+	savedReferences = {},
 }
 
 local util = require("preview-me.util")
@@ -46,6 +47,18 @@ end
 function state.update_selected_row()
 	state.currentLineData = state.lineToDataMap[vim.api.nvim_win_get_cursor(0)[1]]
 	state.currentPreview = state.previews[vim.api.nvim_win_get_cursor(0)[1]]
+end
+
+function state.save_reference(reference)
+	table.insert(state.savedReferences, {
+		data = reference,
+		lineText = string.format(
+			"%d: %d | %s",
+			reference.range.start.line + 1,
+			reference.range.start.character + 1,
+			reference.uri
+		),
+	})
 end
 
 return state
