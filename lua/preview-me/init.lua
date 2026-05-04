@@ -5,6 +5,10 @@ function M.open()
 	previewer.open_references()
 end
 
+function M.open_saved_references()
+	previewer.open_saved_references()
+end
+
 function M.open_in_buf()
 	previewer.open_in_curr_window()
 end

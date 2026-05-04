@@ -7,6 +7,7 @@ let s:lua_rocks_deps_loc =  expand("<sfile>:h:r") . "/../lua/preview-me/deps"
 exe "lua package.path = package.path .. ';" . s:lua_rocks_deps_loc . "/lua-?/init.lua'"
 
 command! -nargs=0 PreviewMe lua require("preview-me").open()
+command! -nargs=0 PreviewMeSaved lua require("preview-me").open_saved_references()
 command! -nargs=0 PreviewMeOpenInBuf lua require("preview-me").open_in_buf()
 command! -nargs=0 PreviewMeOpenVertSplit lua require("preview-me").split_v_ref()
 command! -nargs=0 PreviewMeOpenHorSplit lua require("preview-me").split_h_ref()
