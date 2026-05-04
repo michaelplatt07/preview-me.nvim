@@ -215,7 +215,7 @@ function previewer.store_single_ref()
 	state.save_reference(state.currentLineData)
 end
 
-function previewer.store_every_ref()
+function previewer.store_all_ref()
 	for _, data in pairs(state.lineToDataMap) do
 		state.save_reference(data)
 	end
