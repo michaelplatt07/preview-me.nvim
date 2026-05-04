@@ -15,9 +15,9 @@ function state.set_rows(references)
 	local lines = {}
 	local previews = {}
 	local lineToDataMap = {}
-	for _, reference in ipairs(references) do
+	for _, reference in pairs(references) do
 		if reference.result then
-			for idx, data in ipairs(reference.result) do
+			for idx, data in pairs(reference.result) do
 				local previewLines =
 					util.generate_preview(data.uri, data.range.start.line, state.lineBeforeCount, state.lineAfterCount)
 				lineToDataMap[idx] = data
