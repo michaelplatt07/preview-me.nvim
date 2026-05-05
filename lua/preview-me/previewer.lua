@@ -83,6 +83,14 @@ end
 
 function previewer.open_saved_references()
 	windower.init_required_buffers()
+
+	-- Populate the buffers with the reference information and previews
+	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", true)
+	if #state.lines > 0 then
+		vim.api.nvim_buf_set_lines(windower.savedRefsBuf, 0, 2, false, state.lines)
+	end
+	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", false)
+
 	windower.create_saved_refs_window()
 end
 

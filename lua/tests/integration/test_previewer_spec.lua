@@ -231,7 +231,7 @@ describe("preview-me.store_references", function()
 		vim.api.nvim_set_current_win(windower.referenceWin)
 
 		-- Make the call
-		previewer.store_every_ref()
+		previewer.store_all_ref()
 
 		-- Assert the state was updated
 		assert.is_same(state.savedReferences, {
