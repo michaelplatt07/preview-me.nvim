@@ -92,6 +92,9 @@ function previewer.open_saved_references()
 	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", false)
 
 	windower.create_saved_refs_window()
+
+	-- Initialize key bindings
+	keybindings.map_saved_ref_keys(windower.savedRefsBuf)
 end
 
 local function _get_buff_data()
