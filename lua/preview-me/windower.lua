@@ -2,7 +2,7 @@ local windower = {
 	previewBuf = nil,
 	referenceBuf = nil,
 	savedRefsBuf = nil,
-	referencePointBuf = nil, -- Buffer that is used as a point of reference for where to split or open from ref buffer
+	referencePointWin = nil, -- Buffer that is used as a point of reference for where to split or open from ref buffer
 	previewWin = nil,
 	referenceWin = nil,
 	savedRefsWin = nil,
@@ -62,7 +62,7 @@ function windower.create_preview_window()
 end
 
 function windower.create_saved_refs_window()
-	windower.referencePointBuf = vim.api.nvim_get_current_win()
+	windower.referencePointWin = vim.api.nvim_get_current_win()
 	vim.cmd("botright 10split")
 	windower.savedRefsWin = vim.api.nvim_get_current_win()
 	vim.api.nvim_win_set_buf(windower.savedRefsWin, windower.savedRefsBuf)
@@ -71,7 +71,7 @@ end
 function windower.close_saved_refs_window()
 	vim.api.nvim_win_close(windower.savedRefsWin, { force = true })
 	vim.api.nvim_buf_delete(windower.savedRefsBuf, { force = true })
-	windower.referencePointBuf = nil
+	windower.referencePointWin = nil
 	windower.savedRefsBuf = nil
 	windower.savedRefsWin = nil
 end
