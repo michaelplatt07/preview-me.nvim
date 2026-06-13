@@ -24,6 +24,10 @@ local keybindings = {
 }
 
 local references_keybindings = {
+	split_v = {
+		mode = "n",
+		key = "v",
+	},
 	quit = { mode = "n", key = "q" },
 	quit_esc = { mode = "n", key = "<Esc>" },
 }
@@ -82,6 +86,9 @@ function keybindings.map_keys(buf)
 end
 
 function keybindings.map_saved_ref_keys(buf)
+	vim.keymap.set(references_keybindings.split_v.mode, keybindings.split_v.key, function()
+		require("preview-me.previewer").split_v_ref()
+	end, { buffer = buf })
 	vim.keymap.set(references_keybindings.quit.mode, references_keybindings.quit.key, function()
 		require("preview-me.windower").close_saved_refs_window()
 	end, { buffer = buf })

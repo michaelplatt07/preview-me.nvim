@@ -91,14 +91,29 @@ function previewer.open_saved_references()
 	end
 	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", false)
 
+	-- Callback for when the cursor moves around in the buffer
+	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+		buffer = windower.savedRefsBuf,
+		callback = function()
+			if #state.savedReferences > 0 then
+				state.update_selected_reference()
+			end
+		end,
+	})
+
 	windower.create_saved_refs_window()
 
 	-- Initialize key bindings
 	keybindings.map_saved_ref_keys(windower.savedRefsBuf)
 end
 
-local function _get_buff_data()
-	local data = state.currentLineData
+local function _get_buff_data(from_window)
+	local data = nil
+	if from_window then
+		data = state.currentLineData
+	else
+		data = state.currentSavedReference
+	end
 	return data.uri, data.range.start.line, data.range.start.character
 end
 
@@ -122,12 +137,16 @@ function previewer.open_in_curr_window()
 	state.clear_state()
 end
 
-function previewer.split_v_ref()
+function previewer.split_v_ref(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
-
-	-- Close the plugin
-	windower.close_window()
+	local uri, row, col = _get_buff_data(from_window)
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_buf(windower.referencePointBuf)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("vsplit")
