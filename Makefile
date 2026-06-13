@@ -1,4 +1,8 @@
-.PHONY: clearcoverage testunit testintegration test
+.PHONY: installdeps clearcoverage testunit testintegration test
+
+installdeps:
+	@luarocks install busted --tree=.luarocks && \
+	luarocks install luacov --tree=.luarocks
 
 clearcoverage:
 	@rm -f luacov.report.out && rm -f luacov.stats.out

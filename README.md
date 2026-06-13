@@ -63,7 +63,12 @@ will need luarock installed in some way:
 ```bash
 sudo apt-get install luarocks
 ```
-For the purposes of keeping depdencies separate, the required rocks can be installed locally at the root level of the plugin:
+For the purposes of keeping depdencies separate, the required rocks can be installed locally at the root level of the plugin.
+This can be done with the following single command or list of commands below:
+```bash
+make installdeps
+```
+or
 ```bash
 cd preview-me.nvim
 luarocks install busted --tree=.luarocks
