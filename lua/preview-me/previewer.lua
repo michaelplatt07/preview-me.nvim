@@ -117,12 +117,17 @@ local function _get_buff_data(from_window)
 	return data.uri, data.range.start.line, data.range.start.character
 end
 
-function previewer.open_in_curr_window()
+function previewer.open_in_curr_window(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(windower.referencePointWin)
+	end
 
 	-- Grab the current window so we can set its buffer to the selected buffer
 	local currWindow = vim.api.nvim_get_current_win()
@@ -140,6 +145,7 @@ end
 function previewer.split_v_ref(from_window)
 	-- Get the data on the currently selected line from the state
 	local uri, row, col = _get_buff_data(from_window)
+
 	if from_window then
 		-- Close the plugin because it was open
 		windower.close_window()
@@ -162,12 +168,17 @@ function previewer.split_v_ref(from_window)
 	state.clear_state()
 end
 
-function previewer.split_h_ref()
+function previewer.split_h_ref(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(windower.referencePointWin)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("split")
@@ -183,12 +194,17 @@ function previewer.split_h_ref()
 	state.clear_state()
 end
 
-function previewer.open_in_new_tab()
+function previewer.open_in_new_tab(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(windower.referencePointWin)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("tabe")

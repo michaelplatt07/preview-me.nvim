@@ -38,17 +38,17 @@ end
 
 function keybindings.map_keys(buf)
 	vim.keymap.set(keybindings.split_v.mode, keybindings.split_v.key, function()
-		require("preview-me.previewer").split_v_ref()
+		require("preview-me.previewer").split_v_ref(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.split_h.mode, keybindings.split_h.key, function()
-		require("preview-me.previewer").split_h_ref()
+		require("preview-me.previewer").split_h_ref(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.new_tab.mode, keybindings.new_tab.key, function()
-		require("preview-me.previewer").open_in_new_tab()
+		require("preview-me.previewer").open_in_new_tab(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.curr_window.mode, keybindings.curr_window.key, function()
 		vim.schedule(function()
-			require("preview-me.previewer").open_in_curr_window()
+			require("preview-me.previewer").open_in_curr_window(true)
 		end)
 	end, {
 		buffer = buf,
