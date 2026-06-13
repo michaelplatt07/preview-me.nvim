@@ -85,4 +85,24 @@ describe("windower.window_management", function()
 		assert.is_nil(windower.referenceBuf)
 		assert.is_nil(windower.referenceWin)
 	end)
+
+	it("Should successfully close the saved references window", function()
+		assert.is_nil(windower.savedRefsBuf)
+		assert.is_nil(windower.savedRefsWin)
+
+		-- Open the windows
+		windower.init_required_buffers()
+		windower.create_saved_refs_window()
+
+		-- Assert the buffers are set
+		assert.is_not_nil(windower.savedRefsBuf)
+		assert.is_not_nil(windower.savedRefsWin)
+
+		-- Close the windows and clean up
+		windower.close_saved_refs_window()
+
+		-- Assert the buffers are no longer set
+		assert.is_nil(windower.savedRefsBuf)
+		assert.is_nil(windower.savedRefsWin)
+	end)
 end)

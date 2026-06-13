@@ -66,6 +66,13 @@ function windower.create_saved_refs_window()
 	vim.api.nvim_win_set_buf(windower.savedRefsWin, windower.savedRefsBuf)
 end
 
+function windower.close_saved_refs_window()
+	vim.api.nvim_win_close(windower.savedRefsWin, { force = true })
+	vim.api.nvim_buf_delete(windower.savedRefsBuf, { force = true })
+	windower.savedRefsBuf = nil
+	windower.savedRefsWin = nil
+end
+
 function windower.close_window()
 	-- Close the windows and buffers
 	vim.api.nvim_win_close(windower.referenceWin, { force = true })

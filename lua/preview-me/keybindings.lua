@@ -23,6 +23,11 @@ local keybindings = {
 	quit_esc = { mode = "n", key = "<Esc>" },
 }
 
+local references_keybindings = {
+	quit = { mode = "n", key = "q" },
+	quit_esc = { mode = "n", key = "<Esc>" },
+}
+
 function keybindings.update_key_binding(func, custombind)
 	keybindings[func].key = custombind
 end
@@ -73,6 +78,15 @@ function keybindings.map_keys(buf)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.quit_esc.mode, keybindings.quit_esc.key, function()
 		require("preview-me.windower").close_window()
+	end, { buffer = buf })
+end
+
+function keybindings.map_saved_ref_keys(buf)
+	vim.keymap.set(references_keybindings.quit.mode, references_keybindings.quit.key, function()
+		require("preview-me.windower").close_saved_refs_window()
+	end, { buffer = buf })
+	vim.keymap.set(references_keybindings.quit_esc.mode, references_keybindings.quit_esc.key, function()
+		require("preview-me.windower").close_saved_refs_window()
 	end, { buffer = buf })
 end
 
