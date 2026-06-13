@@ -112,7 +112,7 @@ local function _get_buff_data(from_window)
 	if from_window then
 		data = state.currentLineData
 	else
-		data = state.currentSavedReference
+		data = state.currentSavedReference.data
 	end
 	return data.uri, data.range.start.line, data.range.start.character
 end
