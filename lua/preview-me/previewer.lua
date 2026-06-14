@@ -88,8 +88,8 @@ function previewer.open_saved_references()
 	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", true)
 	if #state.savedReferences > 0 then
 		local savedReferenceLines = {}
-		for _, line in pairs(state.savedReferences) do
-			table.insert(savedReferenceLines, line)
+		for _, entry in pairs(state.savedReferences) do
+			table.insert(savedReferenceLines, entry.lineText)
 		end
 		vim.api.nvim_buf_set_lines(windower.savedRefsBuf, 0, 2, false, savedReferenceLines)
 	end
