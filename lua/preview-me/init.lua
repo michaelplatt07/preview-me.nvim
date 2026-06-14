@@ -26,7 +26,7 @@ function M.open_in_new_tab()
 end
 
 function M.setup(config)
-	previewer.set_up_state(config)
+	previewer.set_up_plugin(config)
 end
 
 return M

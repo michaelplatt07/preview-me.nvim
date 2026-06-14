@@ -2,6 +2,7 @@ local state = require("preview-me.state")
 local keybindings = require("preview-me.keybindings")
 local windower = require("preview-me.windower")
 local util = require("preview-me.util")
+local management = require("preview-me.management")
 local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching
@@ -271,7 +272,10 @@ function previewer.store_all_ref()
 	end
 end
 
-function previewer.set_up_state(config)
+function previewer.set_up_plugin(config)
+	-- Always clear before we load up so we are not doubling down on settings
+	state.clear_state()
+
 	if config ~= nil then
 		if config.keys ~= nil then
 			for func, custombind in pairs(config.keys) do
@@ -289,6 +293,9 @@ function previewer.set_up_state(config)
 			end
 		end
 	end
+
+	-- Create the bindings on the buffer events
+	management.create_bindings()
 end
 
 return previewer
