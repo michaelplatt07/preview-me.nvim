@@ -65,6 +65,7 @@ function windower.create_saved_refs_window()
 	windower.referencePointWin = vim.api.nvim_get_current_win()
 	vim.cmd("botright 10split")
 	windower.savedRefsWin = vim.api.nvim_get_current_win()
+	vim.api.nvim_win_set_option(windower.savedRefsWin, "winfixheight", true)
 	vim.api.nvim_win_set_buf(windower.savedRefsWin, windower.savedRefsBuf)
 end
 
