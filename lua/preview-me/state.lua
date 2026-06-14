@@ -8,7 +8,7 @@ local state = {
 	lineAfterCount = nil,
 	savedReferences = {},
 	currentSavedReference = nil,
-	lastExitedBuffer = nil,
+	lastExitedWin = nil,
 }
 
 local util = require("preview-me.util")
@@ -44,7 +44,7 @@ function state.clear_state()
 	state.lineToDataMap = {}
 	state.currentLineData = {}
 	state.currentPreview = {}
-	state.lastExitedBuffer = nil
+	state.lastExitedWin = nil
 end
 
 function state.update_selected_row()

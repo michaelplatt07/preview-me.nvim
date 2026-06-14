@@ -156,7 +156,7 @@ function previewer.split_v_ref(from_window)
 		windower.close_window()
 	else
 		-- Go to the buffer that is the point of reference instead of closing the reference window
-		vim.api.nvim_set_current_win(windower.referencePointWin)
+		vim.api.nvim_set_current_win(state.lastExitedWin)
 	end
 
 	-- Split and set the buffer accordingly

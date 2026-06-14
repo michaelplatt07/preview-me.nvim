@@ -27,7 +27,7 @@ function management.create_bindings()
 			local shouldIgnore, bufferModifiable = get_buff_watch_flags()
 
 			if bufferModifiable and not shouldIgnore then
-				state.lastExitedBuffer = vim.api.nvim_get_current_buf()
+				state.lastExitedWin = vim.api.nvim_get_current_win()
 			end
 		end,
 	})
