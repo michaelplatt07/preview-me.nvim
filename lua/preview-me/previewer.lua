@@ -131,7 +131,7 @@ function previewer.open_in_curr_window(from_window)
 		windower.close_window()
 	else
 		-- Go to the buffer that is the point of reference instead of closing the reference window
-		vim.api.nvim_set_current_win(windower.referencePointWin)
+		vim.api.nvim_set_current_win(state.lastExitedWin)
 	end
 
 	-- Grab the current window so we can set its buffer to the selected buffer
@@ -182,7 +182,7 @@ function previewer.split_h_ref(from_window)
 		windower.close_window()
 	else
 		-- Go to the buffer that is the point of reference instead of closing the reference window
-		vim.api.nvim_set_current_win(windower.referencePointWin)
+		vim.api.nvim_set_current_win(state.lastExitedWin)
 	end
 
 	-- Split and set the buffer accordingly
@@ -208,7 +208,7 @@ function previewer.open_in_new_tab(from_window)
 		windower.close_window()
 	else
 		-- Go to the buffer that is the point of reference instead of closing the reference window
-		vim.api.nvim_set_current_win(windower.referencePointWin)
+		vim.api.nvim_set_current_win(state.lastExitedWin)
 	end
 
 	-- Split and set the buffer accordingly

@@ -19,7 +19,7 @@ local function get_buff_watch_flags()
 end
 
 function management.create_bindings()
-	vim.api.nvim_create_autocmd("BufLeave", {
+	vim.api.nvim_create_autocmd("WinLeave", {
 		group = managementBuffGroup,
 		pattern = "*",
 		callback = function()
