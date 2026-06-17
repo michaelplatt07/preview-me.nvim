@@ -2,11 +2,10 @@ local state = require("preview-me.state")
 local keybindings = require("preview-me.keybindings")
 local windower = require("preview-me.windower")
 local util = require("preview-me.util")
+local management = require("preview-me.management")
 local previewer = {}
 
 -- TODO(map) Add ability to go up one directory level at a time in searching
-
--- Initialize the settings
 
 function previewer.open_references()
 	-- Init what we need
@@ -83,17 +82,57 @@ function previewer.open_references()
 	vim.api.nvim_buf_set_option(windower.previewBuf, "modifiable", false)
 end
 
-local function _get_buff_data()
-	local data = state.currentLineData
+function previewer.open_saved_references()
+	windower.init_required_buffers()
+
+	-- Populate the buffers with the reference information and previews
+	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", true)
+	if #state.savedReferences > 0 then
+		local savedReferenceLines = {}
+		for _, entry in pairs(state.savedReferences) do
+			table.insert(savedReferenceLines, entry.lineText)
+		end
+		vim.api.nvim_buf_set_lines(windower.savedRefsBuf, 0, 2, false, savedReferenceLines)
+	end
+	vim.api.nvim_buf_set_option(windower.savedRefsBuf, "modifiable", false)
+
+	-- Callback for when the cursor moves around in the buffer
+	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+		buffer = windower.savedRefsBuf,
+		callback = function()
+			if #state.savedReferences > 0 then
+				state.update_selected_reference()
+			end
+		end,
+	})
+
+	windower.create_saved_refs_window()
+
+	-- Initialize key bindings
+	keybindings.map_saved_ref_keys(windower.savedRefsBuf)
+end
+
+local function _get_buff_data(from_window)
+	local data = nil
+	if from_window then
+		data = state.currentLineData
+	else
+		data = state.currentSavedReference.data
+	end
 	return data.uri, data.range.start.line, data.range.start.character
 end
 
-function previewer.open_in_curr_window()
+function previewer.open_in_curr_window(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(state.lastExitedWin)
+	end
 
 	-- Grab the current window so we can set its buffer to the selected buffer
 	local currWindow = vim.api.nvim_get_current_win()
@@ -108,12 +147,17 @@ function previewer.open_in_curr_window()
 	state.clear_state()
 end
 
-function previewer.split_v_ref()
+function previewer.split_v_ref(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(state.lastExitedWin)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("vsplit")
@@ -129,12 +173,17 @@ function previewer.split_v_ref()
 	state.clear_state()
 end
 
-function previewer.split_h_ref()
+function previewer.split_h_ref(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(state.lastExitedWin)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("split")
@@ -150,12 +199,17 @@ function previewer.split_h_ref()
 	state.clear_state()
 end
 
-function previewer.open_in_new_tab()
+function previewer.open_in_new_tab(from_window)
 	-- Get the data on the currently selected line from the state
-	local uri, row, col = _get_buff_data()
+	local uri, row, col = _get_buff_data(from_window)
 
-	-- Close the plugin
-	windower.close_window()
+	if from_window then
+		-- Close the plugin because it was open
+		windower.close_window()
+	else
+		-- Go to the buffer that is the point of reference instead of closing the reference window
+		vim.api.nvim_set_current_win(state.lastExitedWin)
+	end
 
 	-- Split and set the buffer accordingly
 	vim.cmd("tabe")
@@ -208,7 +262,20 @@ function previewer.page_cursor_up()
 	end
 end
 
-function previewer.set_up_state(config)
+function previewer.store_single_ref()
+	state.save_reference(state.currentLineData)
+end
+
+function previewer.store_all_ref()
+	for _, data in pairs(state.lineToDataMap) do
+		state.save_reference(data)
+	end
+end
+
+function previewer.set_up_plugin(config)
+	-- Always clear before we load up so we are not doubling down on settings
+	state.clear_state()
+
 	if config ~= nil then
 		if config.keys ~= nil then
 			for func, custombind in pairs(config.keys) do
@@ -226,6 +293,9 @@ function previewer.set_up_state(config)
 			end
 		end
 	end
+
+	-- Create the bindings on the buffer events
+	management.create_bindings()
 end
 
 return previewer

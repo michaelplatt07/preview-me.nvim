@@ -6,6 +6,9 @@ local state = {
 	currentPreview = nil,
 	lineBeforeCount = nil,
 	lineAfterCount = nil,
+	savedReferences = {},
+	currentSavedReference = nil,
+	lastExitedWin = nil,
 }
 
 local util = require("preview-me.util")
@@ -14,9 +17,9 @@ function state.set_rows(references)
 	local lines = {}
 	local previews = {}
 	local lineToDataMap = {}
-	for _, reference in ipairs(references) do
+	for _, reference in pairs(references) do
 		if reference.result then
-			for idx, data in ipairs(reference.result) do
+			for idx, data in pairs(reference.result) do
 				local previewLines =
 					util.generate_preview(data.uri, data.range.start.line, state.lineBeforeCount, state.lineAfterCount)
 				lineToDataMap[idx] = data
@@ -41,11 +44,28 @@ function state.clear_state()
 	state.lineToDataMap = {}
 	state.currentLineData = {}
 	state.currentPreview = {}
+	state.lastExitedWin = nil
 end
 
 function state.update_selected_row()
 	state.currentLineData = state.lineToDataMap[vim.api.nvim_win_get_cursor(0)[1]]
 	state.currentPreview = state.previews[vim.api.nvim_win_get_cursor(0)[1]]
+end
+
+function state.update_selected_reference()
+	state.currentSavedReference = state.savedReferences[vim.api.nvim_win_get_cursor(0)[1]]
+end
+
+function state.save_reference(reference)
+	table.insert(state.savedReferences, {
+		data = reference,
+		lineText = string.format(
+			"%d: %d | %s",
+			reference.range.start.line + 1,
+			reference.range.start.character + 1,
+			reference.uri
+		),
+	})
 end
 
 return state

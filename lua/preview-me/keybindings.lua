@@ -17,6 +17,27 @@ local keybindings = {
 	move_cursor_up = { mode = "n", key = "<C-p>" },
 	page_cursor_down = { mode = "n", key = "<C-d>" },
 	page_cursor_up = { mode = "n", key = "<C-u>" },
+	store_single_ref = { mode = "n", key = "s" },
+	store_all_ref = { mode = "n", key = "sa" },
+	quit = { mode = "n", key = "q" },
+	quit_esc = { mode = "n", key = "<Esc>" },
+}
+
+local references_keybindings = {
+	split_v = {
+		mode = "n",
+		key = "v",
+	},
+	split_h = { mode = "n", key = "h" },
+	new_tab = { mode = "n", key = "t" },
+	curr_window = {
+		mode = "n",
+		key = "o",
+	},
+	curr_window_enter = {
+		mode = "n",
+		key = "<CR>",
+	},
 	quit = { mode = "n", key = "q" },
 	quit_esc = { mode = "n", key = "<Esc>" },
 }
@@ -27,17 +48,17 @@ end
 
 function keybindings.map_keys(buf)
 	vim.keymap.set(keybindings.split_v.mode, keybindings.split_v.key, function()
-		require("preview-me.previewer").split_v_ref()
+		require("preview-me.previewer").split_v_ref(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.split_h.mode, keybindings.split_h.key, function()
-		require("preview-me.previewer").split_h_ref()
+		require("preview-me.previewer").split_h_ref(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.new_tab.mode, keybindings.new_tab.key, function()
-		require("preview-me.previewer").open_in_new_tab()
+		require("preview-me.previewer").open_in_new_tab(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.curr_window.mode, keybindings.curr_window.key, function()
 		vim.schedule(function()
-			require("preview-me.previewer").open_in_curr_window()
+			require("preview-me.previewer").open_in_curr_window(true)
 		end)
 	end, {
 		buffer = buf,
@@ -46,7 +67,7 @@ function keybindings.map_keys(buf)
 		silent = true,
 	})
 	vim.keymap.set(keybindings.curr_window_enter.mode, keybindings.curr_window_enter.key, function()
-		require("preview-me.previewer").open_in_curr_window()
+		require("preview-me.previewer").open_in_curr_window(true)
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.move_cursor_down.mode, keybindings.move_cursor_down.key, function()
 		require("preview-me.previewer").move_cursor_down()
@@ -60,11 +81,53 @@ function keybindings.map_keys(buf)
 	vim.keymap.set(keybindings.page_cursor_up.mode, keybindings.page_cursor_up.key, function()
 		require("preview-me.previewer").page_cursor_up()
 	end, { buffer = buf })
+	vim.keymap.set(keybindings.store_single_ref.mode, keybindings.store_single_ref.key, function()
+		require("preview-me.previewer").store_single_ref()
+	end, { buffer = buf })
+	vim.keymap.set(keybindings.store_all_ref.mode, keybindings.store_all_ref.key, function()
+		require("preview-me.previewer").store_all_ref()
+	end, { buffer = buf })
 	vim.keymap.set(keybindings.quit.mode, keybindings.quit.key, function()
 		require("preview-me.windower").close_window()
 	end, { buffer = buf })
 	vim.keymap.set(keybindings.quit_esc.mode, keybindings.quit_esc.key, function()
 		require("preview-me.windower").close_window()
+	end, { buffer = buf })
+end
+
+function keybindings.map_saved_ref_keys(buf)
+	vim.keymap.set(references_keybindings.split_v.mode, references_keybindings.split_v.key, function()
+		require("preview-me.previewer").split_v_ref()
+	end, { buffer = buf })
+	vim.keymap.set(references_keybindings.split_h.mode, references_keybindings.split_h.key, function()
+		require("preview-me.previewer").split_h_ref()
+	end, { buffer = buf })
+	vim.keymap.set(references_keybindings.new_tab.mode, references_keybindings.new_tab.key, function()
+		require("preview-me.previewer").open_in_new_tab()
+	end, { buffer = buf })
+	vim.keymap.set(references_keybindings.curr_window.mode, references_keybindings.curr_window.key, function()
+		vim.schedule(function()
+			require("preview-me.previewer").open_in_curr_window()
+		end)
+	end, {
+		buffer = buf,
+		expr = true,
+		noremap = true,
+		silent = true,
+	})
+	vim.keymap.set(
+		references_keybindings.curr_window_enter.mode,
+		references_keybindings.curr_window_enter.key,
+		function()
+			require("preview-me.previewer").open_in_curr_window()
+		end,
+		{ buffer = buf }
+	)
+	vim.keymap.set(references_keybindings.quit.mode, references_keybindings.quit.key, function()
+		require("preview-me.windower").close_saved_refs_window()
+	end, { buffer = buf })
+	vim.keymap.set(references_keybindings.quit_esc.mode, references_keybindings.quit_esc.key, function()
+		require("preview-me.windower").close_saved_refs_window()
 	end, { buffer = buf })
 end
 

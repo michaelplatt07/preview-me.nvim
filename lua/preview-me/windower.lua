@@ -1,8 +1,11 @@
 local windower = {
 	previewBuf = nil,
 	referenceBuf = nil,
+	savedRefsBuf = nil,
+	referencePointWin = nil, -- Buffer that is used as a point of reference for where to split or open from ref buffer
 	previewWin = nil,
 	referenceWin = nil,
+	savedRefsWin = nil,
 }
 
 local function get_full_window_dimensions()
@@ -26,9 +29,11 @@ function windower.init_required_buffers()
 	if windower.referenceBuf == nil then
 		windower.referenceBuf = vim.api.nvim_create_buf(false, true)
 	end
+	if windower.savedRefsBuf == nil then
+		windower.savedRefsBuf = vim.api.nvim_create_buf(false, true)
+	end
 end
 
--- TODO(map) Is there a better way to pass the data here? Maybe create a struct to hold the buffer handle, window, and configs?
 function windower.create_references_window()
 	local windowInfo = get_full_window_dimensions()
 	windower.referenceWin = vim.api.nvim_open_win(windower.referenceBuf, true, {
@@ -54,6 +59,22 @@ function windower.create_preview_window()
 		border = "double",
 		title = "Preview",
 	})
+end
+
+function windower.create_saved_refs_window()
+	windower.referencePointWin = vim.api.nvim_get_current_win()
+	vim.cmd("botright 10split")
+	windower.savedRefsWin = vim.api.nvim_get_current_win()
+	vim.api.nvim_win_set_option(windower.savedRefsWin, "winfixheight", true)
+	vim.api.nvim_win_set_buf(windower.savedRefsWin, windower.savedRefsBuf)
+end
+
+function windower.close_saved_refs_window()
+	vim.api.nvim_win_close(windower.savedRefsWin, { force = true })
+	vim.api.nvim_buf_delete(windower.savedRefsBuf, { force = true })
+	windower.referencePointWin = nil
+	windower.savedRefsBuf = nil
+	windower.savedRefsWin = nil
 end
 
 function windower.close_window()

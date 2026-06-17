@@ -5,6 +5,10 @@ function M.open()
 	previewer.open_references()
 end
 
+function M.open_saved_references()
+	previewer.open_saved_references()
+end
+
 function M.open_in_buf()
 	previewer.open_in_curr_window()
 end
@@ -22,7 +26,7 @@ function M.open_in_new_tab()
 end
 
 function M.setup(config)
-	previewer.set_up_state(config)
+	previewer.set_up_plugin(config)
 end
 
 return M
